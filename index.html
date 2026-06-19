@@ -1,1446 +1,336 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LumeLiving — Interior Design Studio</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --cream: #F7F3EE;
-    --warm-white: #FDFAF6;
-    --gold: #B8965A;
-    --gold-light: #D4AF7A;
-    --charcoal: #1C1C1A;
-    --deep: #0D0D0B;
-    --stone: #8C8478;
-    --mist: #E8E2DA;
-    --terracotta: #C4785A;
-    --sage: #7A8C7E;
-  }
 
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lume Living Co. | Luxury Interior Design</title>
 
-  html { scroll-behavior: smooth; }
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
 
-  body {
-    font-family: 'Jost', sans-serif;
-    background: var(--cream);
-    color: var(--charcoal);
-    overflow-x: hidden;
-    cursor: none;
-  }
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
 
-  /* CUSTOM CURSOR */
-  .cursor {
-    position: fixed;
-    width: 8px; height: 8px;
-    background: var(--gold);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 9999;
-    transform: translate(-50%, -50%);
-    transition: width 0.3s, height 0.3s, background 0.3s;
-    mix-blend-mode: multiply;
-  }
-  .cursor-ring {
-    position: fixed;
-    width: 36px; height: 36px;
-    border: 1px solid var(--gold);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 9998;
-    transform: translate(-50%, -50%);
-    transition: all 0.15s ease-out;
-    opacity: 0.6;
-  }
-  body:hover .cursor { opacity: 1; }
-  a:hover ~ .cursor, button:hover ~ .cursor { width: 16px; height: 16px; }
-
-  /* LOADER */
-  .loader {
-    position: fixed;
-    inset: 0;
-    background: var(--deep);
-    z-index: 9000;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 24px;
-    transition: opacity 0.8s ease, visibility 0.8s;
-  }
-  .loader.hidden { opacity: 0; visibility: hidden; }
-  .loader-logo {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 42px;
-    font-weight: 300;
-    letter-spacing: 0.3em;
-    color: var(--cream);
-    opacity: 0;
-    animation: fadeUp 0.8s 0.3s forwards;
-  }
-  .loader-line {
-    width: 0;
-    height: 1px;
-    background: var(--gold);
-    animation: expandLine 1.2s 0.8s forwards ease-out;
-  }
-  .loader-sub {
-    font-size: 11px;
-    letter-spacing: 0.4em;
-    color: var(--stone);
-    text-transform: uppercase;
-    opacity: 0;
-    animation: fadeUp 0.6s 1.2s forwards;
-  }
-  @keyframes expandLine { to { width: 160px; } }
-  @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
-
-  /* NAV */
-  nav {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 100;
-    padding: 0 60px;
-    height: 70px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    transition: background 0.4s, backdrop-filter 0.4s;
-  }
-  nav.scrolled {
-    background: rgba(247, 243, 238, 0.92);
-    backdrop-filter: blur(16px);
-    border-bottom: 1px solid rgba(184, 150, 90, 0.15);
-  }
-  .nav-logo {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 22px;
-    font-weight: 400;
-    letter-spacing: 0.15em;
-    color: var(--charcoal);
-    text-decoration: none;
-  }
-  .nav-logo span { color: var(--gold); }
-  .nav-links {
-    display: flex;
-    gap: 40px;
-    list-style: none;
-  }
-  .nav-links a {
-    font-size: 11px;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: var(--charcoal);
-    text-decoration: none;
-    font-weight: 400;
-    position: relative;
-    transition: color 0.3s;
-  }
-  .nav-links a::after {
-    content: '';
-    position: absolute;
-    bottom: -3px; left: 0;
-    width: 0; height: 1px;
-    background: var(--gold);
-    transition: width 0.3s;
-  }
-  .nav-links a:hover { color: var(--gold); }
-  .nav-links a:hover::after { width: 100%; }
-  .nav-actions { display: flex; gap: 20px; align-items: center; }
-  .nav-btn {
-    font-size: 10px;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    padding: 10px 24px;
-    border: 1px solid var(--charcoal);
-    background: transparent;
-    color: var(--charcoal);
-    cursor: none;
-    transition: all 0.3s;
-    font-family: 'Jost', sans-serif;
-  }
-  .nav-btn:hover { background: var(--charcoal); color: var(--cream); }
-
-  /* HERO */
-  .hero {
-    min-height: 100vh;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    position: relative;
-    overflow: hidden;
-    background: var(--warm-white);
-  }
-  .hero-left {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 140px 80px 80px;
-    position: relative;
-    z-index: 2;
-  }
-  .hero-tag {
-    font-size: 10px;
-    letter-spacing: 0.4em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 32px;
-    opacity: 0;
-    animation: fadeUp 0.8s 1.8s forwards;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-  }
-  .hero-tag::before {
-    content: '';
-    display: block;
-    width: 32px; height: 1px;
-    background: var(--gold);
-  }
-  .hero-headline {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(52px, 6vw, 84px);
-    font-weight: 300;
-    line-height: 1.05;
-    color: var(--charcoal);
-    margin-bottom: 32px;
-    opacity: 0;
-    animation: fadeUp 0.9s 2s forwards;
-  }
-  .hero-headline em {
-    font-style: italic;
-    color: var(--gold);
-  }
-  .hero-desc {
-    font-size: 14px;
-    line-height: 1.9;
-    color: var(--stone);
-    max-width: 380px;
-    margin-bottom: 48px;
-    font-weight: 300;
-    opacity: 0;
-    animation: fadeUp 0.8s 2.2s forwards;
-  }
-  .hero-cta {
-    display: flex;
-    gap: 20px;
-    align-items: center;
-    opacity: 0;
-    animation: fadeUp 0.8s 2.4s forwards;
-  }
-  .btn-primary {
-    padding: 16px 40px;
-    background: var(--charcoal);
-    color: var(--cream);
-    font-size: 11px;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    text-decoration: none;
-    font-family: 'Jost', sans-serif;
-    transition: all 0.4s;
-    position: relative;
-    overflow: hidden;
-    cursor: none;
-  }
-  .btn-primary::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: var(--gold);
-    transform: translateX(-101%);
-    transition: transform 0.4s cubic-bezier(0.77, 0, 0.175, 1);
-  }
-  .btn-primary:hover::before { transform: translateX(0); }
-  .btn-primary span { position: relative; z-index: 1; }
-  .btn-outline {
-    font-size: 11px;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: var(--stone);
-    text-decoration: none;
-    font-family: 'Jost', sans-serif;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    transition: color 0.3s;
-    cursor: none;
-  }
-  .btn-outline::after {
-    content: '→';
-    transition: transform 0.3s;
-  }
-  .btn-outline:hover { color: var(--charcoal); }
-  .btn-outline:hover::after { transform: translateX(4px); }
-
-  .hero-right {
-    position: relative;
-    overflow: hidden;
-    opacity: 0;
-    animation: fadeIn 1.2s 1.6s forwards;
-  }
-  @keyframes fadeIn { to { opacity: 1; } }
-  .hero-right-inner {
-    position: absolute;
-    inset: 0;
-    display: grid;
-    grid-template-rows: 1fr 1fr;
-    grid-template-columns: 1fr 1fr;
-    gap: 3px;
-    padding: 70px 0 0;
-  }
-  .hero-img {
-    background-size: cover;
-    background-position: center;
-    overflow: hidden;
-    position: relative;
-  }
-  .hero-img::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: rgba(28,28,26,0);
-    transition: background 0.4s;
-  }
-  .hero-img:hover::after { background: rgba(28,28,26,0.12); }
-  .hero-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 6s ease; }
-  .hero-img:hover img { transform: scale(1.04); }
-  .hero-img.large { grid-row: 1 / 3; }
-
-  .hero-scroll {
-    position: absolute;
-    bottom: 40px; left: 80px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-size: 10px;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: var(--stone);
-    opacity: 0;
-    animation: fadeUp 0.8s 2.8s forwards;
-  }
-  .scroll-line {
-    width: 40px; height: 1px;
-    background: var(--stone);
-    position: relative;
-    overflow: hidden;
-  }
-  .scroll-line::after {
-    content: '';
-    position: absolute;
-    top: 0; left: -100%;
-    width: 100%; height: 100%;
-    background: var(--gold);
-    animation: scrollAnim 2s 3s infinite;
-  }
-  @keyframes scrollAnim { 0% { left: -100%; } 100% { left: 100%; } }
-
-  /* MARQUEE */
-  .marquee-wrap {
-    background: var(--charcoal);
-    padding: 18px 0;
-    overflow: hidden;
-    position: relative;
-  }
-  .marquee-track {
-    display: flex;
-    gap: 0;
-    animation: marquee 25s linear infinite;
-    white-space: nowrap;
-  }
-  .marquee-item {
-    flex-shrink: 0;
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 13px;
-    letter-spacing: 0.2em;
-    color: var(--cream);
-    padding: 0 40px;
-    opacity: 0.7;
-  }
-  .marquee-dot {
-    color: var(--gold);
-    flex-shrink: 0;
-    padding: 0;
-    font-size: 18px;
-    opacity: 1 !important;
-  }
-  @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-
-  /* FEATURES */
-  .features {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    padding: 80px 80px;
-    gap: 0;
-    border-bottom: 1px solid var(--mist);
-  }
-  .feature-item {
-    padding: 40px 50px;
-    border-right: 1px solid var(--mist);
-    text-align: center;
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.6s, transform 0.6s;
-  }
-  .feature-item:last-child { border-right: none; }
-  .feature-item.visible { opacity: 1; transform: translateY(0); }
-  .feature-num {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 11px;
-    letter-spacing: 0.4em;
-    color: var(--gold);
-    margin-bottom: 20px;
-  }
-  .feature-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 22px;
-    font-weight: 400;
-    color: var(--charcoal);
-    margin-bottom: 14px;
-  }
-  .feature-desc {
-    font-size: 13px;
-    line-height: 1.8;
-    color: var(--stone);
-    font-weight: 300;
-  }
-
-  /* ARRIVALS */
-  .section {
-    padding: 100px 80px;
-  }
-  .section-header {
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    margin-bottom: 60px;
-  }
-  .section-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(36px, 4vw, 56px);
-    font-weight: 300;
-    color: var(--charcoal);
-    line-height: 1.1;
-  }
-  .section-title em { font-style: italic; color: var(--gold); }
-  .section-link {
-    font-size: 10px;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: var(--stone);
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    transition: color 0.3s;
-    cursor: none;
-  }
-  .section-link::after { content: '→'; transition: transform 0.3s; }
-  .section-link:hover { color: var(--gold); }
-  .section-link:hover::after { transform: translateX(4px); }
-
-  .products-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 24px;
-  }
-  .product-card {
-    cursor: none;
-    opacity: 0;
-    transform: translateY(40px);
-    transition: opacity 0.6s, transform 0.6s;
-  }
-  .product-card.visible { opacity: 1; transform: translateY(0); }
-  .product-card:nth-child(2) { transition-delay: 0.1s; }
-  .product-card:nth-child(3) { transition-delay: 0.2s; }
-  .product-card:nth-child(4) { transition-delay: 0.3s; }
-  .product-img {
-    aspect-ratio: 3/4;
-    overflow: hidden;
-    position: relative;
-    background: var(--mist);
-    margin-bottom: 16px;
-  }
-  .product-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94); }
-  .product-card:hover .product-img img { transform: scale(1.06); }
-  .product-overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to top, rgba(28,28,26,0.5) 0%, transparent 60%);
-    opacity: 0;
-    transition: opacity 0.4s;
-    display: flex;
-    align-items: flex-end;
-    padding: 24px;
-  }
-  .product-card:hover .product-overlay { opacity: 1; }
-  .product-overlay-btn {
-    font-size: 10px;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: var(--cream);
-    padding: 10px 20px;
-    border: 1px solid rgba(255,255,255,0.4);
-    background: transparent;
-    transition: background 0.3s;
-    cursor: none;
-    font-family: 'Jost', sans-serif;
-  }
-  .product-overlay-btn:hover { background: var(--gold); border-color: var(--gold); }
-  .product-name {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 16px;
-    font-weight: 400;
-    color: var(--charcoal);
-    margin-bottom: 4px;
-  }
-  .product-sub { font-size: 12px; color: var(--stone); font-weight: 300; }
-  .product-price { font-size: 13px; color: var(--gold); margin-top: 6px; letter-spacing: 0.05em; }
-
-  /* CATEGORIES */
-  .categories-section {
-    padding: 100px 80px;
-    background: var(--charcoal);
-    position: relative;
-    overflow: hidden;
-  }
-  .categories-section::before {
-    content: '';
-    position: absolute;
-    top: -100px; right: -100px;
-    width: 500px; height: 500px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(184,150,90,0.08) 0%, transparent 70%);
-  }
-  .categories-section .section-title { color: var(--cream); }
-  .categories-section .section-link { color: rgba(247,243,238,0.4); }
-  .categories-section .section-link:hover { color: var(--gold); }
-  .categories-layout {
-    display: grid;
-    grid-template-columns: 1fr 2fr 1fr;
-    gap: 40px;
-    align-items: center;
-    margin-top: 60px;
-  }
-  .cat-img {
-    aspect-ratio: 3/4;
-    overflow: hidden;
-    position: relative;
-  }
-  .cat-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s; }
-  .cat-img:hover img { transform: scale(1.05); }
-  .cat-list {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    text-align: center;
-  }
-  .cat-list-item {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(24px, 3vw, 44px);
-    font-weight: 300;
-    color: rgba(247,243,238,0.3);
-    padding: 18px 0;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
-    cursor: none;
-    transition: color 0.3s, padding-left 0.3s;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 20px;
-  }
-  .cat-list-item:last-child { border-bottom: none; }
-  .cat-list-item .cat-count {
-    font-size: 11px;
-    letter-spacing: 0.3em;
-    color: var(--gold);
-    font-family: 'Jost', sans-serif;
-    font-weight: 300;
-    opacity: 0;
-    transition: opacity 0.3s;
-  }
-  .cat-list-item.active, .cat-list-item:hover {
-    color: var(--cream);
-  }
-  .cat-list-item.active .cat-count,
-  .cat-list-item:hover .cat-count { opacity: 1; }
-
-  /* STATEMENT */
-  .statement {
-    padding: 120px 80px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-    background: var(--warm-white);
-  }
-  .statement::before {
-    content: 'LUME';
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 280px;
-    font-weight: 300;
-    color: rgba(184,150,90,0.04);
-    white-space: nowrap;
-    pointer-events: none;
-    letter-spacing: 0.1em;
-  }
-  .statement-text {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(32px, 4.5vw, 64px);
-    font-weight: 300;
-    line-height: 1.3;
-    color: var(--charcoal);
-    max-width: 900px;
-    margin: 0 auto 50px;
-    position: relative;
-    opacity: 0;
-    transform: translateY(40px);
-    transition: all 0.9s;
-  }
-  .statement-text.visible { opacity: 1; transform: translateY(0); }
-  .statement-text em { font-style: italic; color: var(--gold); }
-  .statement-icons {
-    display: flex;
-    justify-content: center;
-    gap: 16px;
-    margin-bottom: 50px;
-  }
-  .s-icon {
-    width: 48px; height: 48px;
-    border-radius: 50%;
-    overflow: hidden;
-    border: 2px solid var(--mist);
-  }
-  .s-icon img { width: 100%; height: 100%; object-fit: cover; }
-
-  /* SHOP BY ROOM */
-  .rooms {
-    padding: 100px 80px;
-    background: var(--cream);
-  }
-  .rooms-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: auto auto;
-    gap: 3px;
-    margin-top: 60px;
-  }
-  .room-card {
-    position: relative;
-    overflow: hidden;
-    cursor: none;
-  }
-  .room-card:nth-child(1) { grid-column: 1 / 2; grid-row: 1 / 2; aspect-ratio: 1; }
-  .room-card:nth-child(2) { grid-column: 2 / 3; grid-row: 1 / 3; aspect-ratio: 0.6; }
-  .room-card:nth-child(3) { grid-column: 3 / 4; grid-row: 1 / 2; aspect-ratio: 1; }
-  .room-card:nth-child(4) { grid-column: 1 / 2; grid-row: 2 / 3; aspect-ratio: 1; }
-  .room-card:nth-child(5) { grid-column: 3 / 4; grid-row: 2 / 3; aspect-ratio: 1; }
-  .room-card img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.7s; }
-  .room-card:hover img { transform: scale(1.06); }
-  .room-label {
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
-    background: linear-gradient(to top, rgba(13,13,11,0.75) 0%, transparent 100%);
-    padding: 40px 28px 24px;
-    transform: translateY(10px);
-    transition: transform 0.4s;
-  }
-  .room-card:hover .room-label { transform: translateY(0); }
-  .room-label-name {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 22px;
-    font-weight: 300;
-    color: var(--cream);
-    letter-spacing: 0.05em;
-  }
-  .room-label-link {
-    font-size: 10px;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: var(--gold);
-    display: block;
-    margin-top: 6px;
-    opacity: 0;
-    transition: opacity 0.3s 0.1s;
-  }
-  .room-card:hover .room-label-link { opacity: 1; }
-
-  /* INSTAGRAM */
-  .instagram {
-    padding: 80px;
-    background: var(--warm-white);
-  }
-  .instagram-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 40px;
-  }
-  .insta-tag {
-    font-size: 13px;
-    letter-spacing: 0.2em;
-    color: var(--stone);
-  }
-  .insta-tag span { color: var(--charcoal); font-weight: 500; }
-  .instagram-grid {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 3px;
-  }
-  .insta-item {
-    aspect-ratio: 1;
-    overflow: hidden;
-    position: relative;
-    cursor: none;
-  }
-  .insta-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
-  .insta-item:hover img { transform: scale(1.08); }
-  .insta-overlay {
-    position: absolute;
-    inset: 0;
-    background: rgba(184,150,90,0.4);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    transition: opacity 0.3s;
-  }
-  .insta-item:hover .insta-overlay { opacity: 1; }
-  .insta-overlay-icon { font-size: 24px; color: white; }
-
-  /* FOOTER */
-  footer {
-    background: var(--deep);
-    color: var(--cream);
-  }
-  .footer-hero {
-    padding: 100px 80px;
-    text-align: center;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
-    position: relative;
-    overflow: hidden;
-  }
-  .footer-hero::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 50%;
-    transform: translateX(-50%);
-    width: 1px;
-    height: 60px;
-    background: linear-gradient(to bottom, transparent, var(--gold));
-  }
-  .footer-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(36px, 5vw, 72px);
-    font-weight: 300;
-    font-style: italic;
-    line-height: 1.2;
-    margin-bottom: 40px;
-    margin-top: 60px;
-  }
-  .footer-title em { color: var(--gold); }
-  .footer-main {
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
-    gap: 60px;
-    padding: 70px 80px;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
-  }
-  .footer-brand-name {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 28px;
-    font-weight: 300;
-    letter-spacing: 0.1em;
-    margin-bottom: 16px;
-  }
-  .footer-brand-name span { color: var(--gold); }
-  .footer-brand-desc {
-    font-size: 13px;
-    line-height: 1.8;
-    color: rgba(247,243,238,0.4);
-    max-width: 260px;
-    font-weight: 300;
-    margin-bottom: 32px;
-  }
-  .footer-newsletter {
-    display: flex;
-    border: 1px solid rgba(255,255,255,0.12);
-  }
-  .footer-email {
-    flex: 1;
-    background: transparent;
-    border: none;
-    padding: 12px 16px;
-    font-size: 11px;
-    color: var(--cream);
-    font-family: 'Jost', sans-serif;
-    letter-spacing: 0.1em;
-    outline: none;
-  }
-  .footer-email::placeholder { color: rgba(247,243,238,0.3); }
-  .footer-submit {
-    padding: 12px 20px;
-    background: var(--gold);
-    border: none;
-    color: var(--deep);
-    font-size: 10px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    font-family: 'Jost', sans-serif;
-    cursor: none;
-    transition: background 0.3s;
-  }
-  .footer-submit:hover { background: var(--gold-light); }
-  .footer-col-title {
-    font-size: 10px;
-    letter-spacing: 0.35em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 24px;
-  }
-  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 12px; }
-  .footer-col ul a {
-    font-size: 12px;
-    color: rgba(247,243,238,0.5);
-    text-decoration: none;
-    transition: color 0.3s;
-    letter-spacing: 0.05em;
-  }
-  .footer-col ul a:hover { color: var(--cream); }
-  .footer-bottom {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 24px 80px;
-  }
-  .footer-copy {
-    font-size: 11px;
-    color: rgba(247,243,238,0.25);
-    letter-spacing: 0.1em;
-  }
-  .footer-social {
-    display: flex;
-    gap: 24px;
-  }
-  .footer-social a {
-    font-size: 10px;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: rgba(247,243,238,0.3);
-    text-decoration: none;
-    transition: color 0.3s;
-    cursor: none;
-  }
-  .footer-social a:hover { color: var(--gold); }
-
-  /* PARALLAX DIVIDER */
-  .parallax-divider {
-    height: 420px;
-    position: relative;
-    overflow: hidden;
-  }
-  .parallax-bg {
-    position: absolute;
-    inset: -100px 0;
-    background-attachment: fixed;
-    background-position: center;
-    background-size: cover;
-    background-image: url('https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=1600&q=80');
-  }
-  .parallax-overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to right, rgba(13,13,11,0.7) 0%, rgba(13,13,11,0.3) 100%);
-    display: flex;
-    align-items: center;
-    padding: 0 120px;
-  }
-  .parallax-content { max-width: 500px; }
-  .parallax-label {
-    font-size: 10px;
-    letter-spacing: 0.4em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-  }
-  .parallax-label::before { content: ''; display: block; width: 30px; height: 1px; background: var(--gold); }
-  .parallax-quote {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(28px, 3vw, 48px);
-    font-weight: 300;
-    font-style: italic;
-    color: var(--cream);
-    line-height: 1.3;
-    margin-bottom: 32px;
-  }
-
-  /* GRAIN OVERLAY */
-  body::after {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
-    opacity: 0.018;
-    pointer-events: none;
-    z-index: 9997;
-  }
-
-  /* SCROLL PROGRESS */
-  .progress-bar {
-    position: fixed;
-    top: 0; left: 0;
-    height: 2px;
-    background: var(--gold);
-    z-index: 200;
-    transition: width 0.1s;
-  }
-
-  /* Stagger animation for rooms */
-  .room-card {
-    opacity: 0;
-    transform: scale(0.97);
-    transition: opacity 0.7s, transform 0.7s;
-  }
-  .room-card.visible { opacity: 1; transform: scale(1); }
-  .room-card:nth-child(2) { transition-delay: 0.15s; }
-  .room-card:nth-child(3) { transition-delay: 0.1s; }
-  .room-card:nth-child(4) { transition-delay: 0.2s; }
-  .room-card:nth-child(5) { transition-delay: 0.25s; }
-
-  @media (max-width: 1024px) {
-    .hero { grid-template-columns: 1fr; }
-    .hero-right { display: none; }
-    .hero-left { padding: 140px 40px 80px; }
-    .features { grid-template-columns: 1fr; }
-    .feature-item { border-right: none; border-bottom: 1px solid var(--mist); }
-    .products-grid { grid-template-columns: repeat(2, 1fr); }
-    .categories-layout { grid-template-columns: 1fr; }
-    .rooms-grid { grid-template-columns: 1fr 1fr; }
-    .room-card { grid-column: auto !important; grid-row: auto !important; aspect-ratio: 1 !important; }
-    .instagram-grid { grid-template-columns: repeat(3, 1fr); }
-    .footer-main { grid-template-columns: 1fr 1fr; }
-    nav { padding: 0 30px; }
-    .section, .categories-section, .rooms, .instagram, .statement { padding: 70px 30px; }
-    .footer-main, .footer-bottom { padding: 50px 30px; }
-    .footer-hero { padding: 70px 30px; }
-  }
-</style>
 </head>
 <body>
 
-<div class="cursor" id="cursor"></div>
-<div class="cursor-ring" id="cursorRing"></div>
-<div class="progress-bar" id="progressBar"></div>
+<!-- ============ HEADER ============ -->
+<header class="luxury-header">
 
-<!-- LOADER -->
-<div class="loader" id="loader">
-  <div class="loader-logo">LUMELIVING</div>
-  <div class="loader-line"></div>
-  <div class="loader-sub">Interior Design Studio</div>
-</div>
+  <div class="nav-block empty"></div>
 
-<!-- NAV -->
-<nav id="navbar">
-  <a href="#" class="nav-logo">LUME<span>LIVING</span></a>
-  <ul class="nav-links">
-    <li><a href="#">About</a></li>
-    <li><a href="#">Furniture</a></li>
-    <li><a href="#">Lighting</a></li>
-    <li><a href="#">Rugs</a></li>
-    <li><a href="#">Décor</a></li>
-    <li><a href="#">Accessories</a></li>
-  </ul>
-  <div class="nav-actions">
-    <button class="nav-btn">Consult</button>
+  <a href="#home"     class="nav-block" data-section="home">Home</a>
+  <a href="#about"    class="nav-block" data-section="about">About</a>
+
+  <div class="logo-block">
+    <img src="images/logo.jpeg" alt="Lume Living Co.">
   </div>
-</nav>
 
-<!-- HERO -->
-<section class="hero" id="hero">
+  <a href="#projects" class="nav-block" data-section="projects">Projects</a>
+  <a href="#contact"  class="nav-block" data-section="contact">Contact</a>
+
+  <div class="social-block">
+    <i class="fab fa-instagram" aria-label="Instagram"></i>
+    <i class="fab fa-linkedin"  aria-label="LinkedIn"></i>
+    <i class="far fa-envelope"  aria-label="Email"></i>
+  </div>
+
+</header>
+
+
+<!-- ============ HERO ============ -->
+<section id="home" class="hero">
+
+  <!-- Left: copy -->
   <div class="hero-left">
-    <div class="hero-tag">Est. 2018 — Bengaluru</div>
-    <h1 class="hero-headline">
-      We Craft <em>Luminous</em><br>Spaces for the<br>Modern Soul
-    </h1>
-    <p class="hero-desc">
-      Bespoke interiors that marry timeless elegance with contemporary sensibility. Every room, a curated story. Every detail, an intention.
-    </p>
-    <div class="hero-cta">
-      <a href="#" class="btn-primary"><span>Explore Our Portfolio</span></a>
-      <a href="#" class="btn-outline">Book a Consultation</a>
+    <div class="hero-left-inner">
+
+      <span class="eyebrow reveal">Bespoke Interior Design · Est. 2012</span>
+
+      <div class="hero-headline-wrap reveal reveal-delay-1">
+        <h1>Creating <em>Timeless</em><br>Luxury Spaces<br>That Inspire</h1>
+      </div>
+
+      <p class="hero-sub reveal reveal-delay-2">
+        Transform your home into a masterpiece of elegance, comfort and
+        sophistication — tailored entirely to you.
+      </p>
+
+      <div class="hero-buttons reveal reveal-delay-3">
+        <a href="#contact"  class="gold-btn">Free Consultation</a>
+        <a href="#projects" class="outline-btn">View Projects</a>
+      </div>
+
+      <div class="hero-stats reveal reveal-delay-4">
+        <div class="hero-stat">
+          <h3 class="stat-projects">250+</h3>
+          <p>Projects Delivered</p>
+        </div>
+        <div class="hero-stat">
+          <h3 class="stat-satisfaction">98%</h3>
+          <p>Client Satisfaction</p>
+        </div>
+        <div class="hero-stat">
+          <h3 class="stat-years">12+</h3>
+          <p>Years Experience</p>
+        </div>
+      </div>
+
     </div>
   </div>
+
+  <!-- Right: image + floating card -->
   <div class="hero-right">
-    <div class="hero-right-inner">
-      <div class="hero-img large">
-        <img src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=800&q=80" alt="Living Room" loading="eager">
-      </div>
-      <div class="hero-img">
-        <img src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=600&q=80" alt="Bedroom" loading="eager">
-      </div>
-      <div class="hero-img">
-        <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&q=80" alt="Sofa" loading="eager">
-      </div>
+    <img class="hero-image" src="images/project1.png" alt="Luxury interior by Lume Living Co.">
+
+    <div class="consultation-card reveal">
+      <h3>Talk to a Designer</h3>
+      <p class="card-sub">Complimentary · No commitment</p>
+      <form>
+        <input type="text"   placeholder="Your Name"     required>
+        <input type="email"  placeholder="Email Address" required>
+        <input type="tel"    placeholder="Phone Number">
+        <select>
+          <option value="" disabled selected>Select City</option>
+          <option>Bangalore</option>
+          <option>Chennai</option>
+          <option>Mumbai</option>
+          <option>Delhi</option>
+          <option>Hyderabad</option>
+          <option>Pune</option>
+        </select>
+        <button type="submit">Get Free Quote</button>
+      </form>
     </div>
   </div>
-  <div class="hero-scroll">
-    <div class="scroll-line"></div>
-    Scroll to explore
-  </div>
+
 </section>
 
-<!-- MARQUEE -->
-<div class="marquee-wrap">
-  <div class="marquee-track">
-    <span class="marquee-item">Timeless Design</span>
-    <span class="marquee-item marquee-dot">✦</span>
-    <span class="marquee-item">Curated Spaces</span>
-    <span class="marquee-item marquee-dot">✦</span>
-    <span class="marquee-item">Luxury Living</span>
-    <span class="marquee-item marquee-dot">✦</span>
-    <span class="marquee-item">Bespoke Interiors</span>
-    <span class="marquee-item marquee-dot">✦</span>
-    <span class="marquee-item">Artisanal Craft</span>
-    <span class="marquee-item marquee-dot">✦</span>
-    <span class="marquee-item">Modern Elegance</span>
-    <span class="marquee-item marquee-dot">✦</span>
-    <!-- Duplicate for seamless loop -->
-    <span class="marquee-item">Timeless Design</span>
-    <span class="marquee-item marquee-dot">✦</span>
-    <span class="marquee-item">Curated Spaces</span>
-    <span class="marquee-item marquee-dot">✦</span>
-    <span class="marquee-item">Luxury Living</span>
-    <span class="marquee-item marquee-dot">✦</span>
-    <span class="marquee-item">Bespoke Interiors</span>
-    <span class="marquee-item marquee-dot">✦</span>
-    <span class="marquee-item">Artisanal Craft</span>
-    <span class="marquee-item marquee-dot">✦</span>
-    <span class="marquee-item">Modern Elegance</span>
-    <span class="marquee-item marquee-dot">✦</span>
-  </div>
-</div>
 
-<!-- FEATURES -->
-<div class="features">
-  <div class="feature-item">
-    <div class="feature-num">01</div>
-    <div class="feature-title">Singular Artistry</div>
-    <p class="feature-desc">Every piece chosen with intention, designed to elevate your everyday existence into something extraordinary.</p>
-  </div>
-  <div class="feature-item">
-    <div class="feature-num">02</div>
-    <div class="feature-title">Expert Curation</div>
-    <p class="feature-desc">Our design consultants vet each collection for quality, origin, and enduring aesthetic value before it reaches you.</p>
-  </div>
-  <div class="feature-item">
-    <div class="feature-num">03</div>
-    <div class="feature-title">White Glove Delivery</div>
-    <p class="feature-desc">Full-service installation and placement, ensuring your vision is realized with meticulous care and attention.</p>
-  </div>
-</div>
+<!-- ============ ABOUT ============ -->
+<section id="about">
+  <div class="container about-grid">
 
-<!-- NEW ARRIVALS -->
-<section class="section" id="arrivals">
-  <div class="section-header">
-    <div>
-      <p style="font-size:10px;letter-spacing:.35em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;">New Arrivals</p>
-      <h2 class="section-title">Latest <em>Additions</em></h2>
+    <div class="about-image-wrap reveal">
+      <img src="images/about.jpg" alt="Lume Living atelier">
     </div>
-    <a href="#" class="section-link">View All</a>
-  </div>
-  <div class="products-grid">
-    <div class="product-card">
-      <div class="product-img">
-        <img src="https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=600&q=80" alt="Arm Sofa">
-        <div class="product-overlay">
-          <button class="product-overlay-btn">Quick View</button>
+
+    <div class="about-content">
+      <span class="eyebrow reveal">About Us</span>
+      <h2 class="reveal reveal-delay-1">Luxury Interiors Crafted With <em>Precision</em></h2>
+      <div class="gold-rule reveal reveal-delay-1"></div>
+      <p class="reveal reveal-delay-2">
+        At Lume Living Co., we create refined residential and commercial spaces that
+        blend timeless elegance with modern functionality. Every room we touch becomes
+        a personal statement — quiet confidence made visible.
+      </p>
+      <p class="reveal reveal-delay-3">
+        Each project is a bespoke collaboration — tailored to reflect your lifestyle,
+        taste, and deepest aspirations. From initial concept to final installation,
+        we are with you at every step.
+      </p>
+      <div class="about-signature reveal reveal-delay-4">
+        <div class="sig-text">
+          <strong>Priya Sharma</strong>
+          <p>Founder & Principal Designer</p>
         </div>
       </div>
-      <div class="product-name">Lune Arm Sofa</div>
-      <div class="product-sub">Boucle — Ivory</div>
-      <div class="product-price">₹1,18,000</div>
     </div>
-    <div class="product-card">
-      <div class="product-img">
-        <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=600&q=80" alt="Lounge Chair">
-        <div class="product-overlay">
-          <button class="product-overlay-btn">Quick View</button>
+
+  </div>
+</section>
+
+
+<!-- ============ SERVICES ============ -->
+<section id="services">
+  <div class="section-heading container">
+    <span class="eyebrow reveal">Our Services</span>
+    <h2 class="reveal reveal-delay-1">Exceptional Design<br>Solutions</h2>
+  </div>
+
+  <div class="container service-grid">
+
+    <div class="service-card reveal">
+      <div class="service-icon"><i class="fas fa-couch" aria-hidden="true"></i></div>
+      <h3>Luxury Interiors</h3>
+      <p>Bespoke residential design — from a single room to an entire estate. Every detail considered, every surface intentional.</p>
+      <span class="service-link">Explore</span>
+    </div>
+
+    <div class="service-card reveal reveal-delay-1">
+      <div class="service-icon"><i class="fas fa-building" aria-hidden="true"></i></div>
+      <h3>Commercial Spaces</h3>
+      <p>Offices, hospitality venues, and retail environments that carry your brand's personality through every corner.</p>
+      <span class="service-link">Explore</span>
+    </div>
+
+    <div class="service-card reveal reveal-delay-2">
+      <div class="service-icon"><i class="fas fa-key" aria-hidden="true"></i></div>
+      <h3>Turnkey Projects</h3>
+      <p>Complete end-to-end execution — design, procurement, construction oversight, and styling — delivered on time.</p>
+      <span class="service-link">Explore</span>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ============ PROJECTS ============ -->
+<section id="projects">
+  <div class="section-heading container">
+    <span class="eyebrow reveal">Portfolio</span>
+    <h2 class="reveal reveal-delay-1">Featured Projects</h2>
+  </div>
+
+  <div class="container project-grid">
+
+    <div class="project-card reveal">
+      <img src="images/project1.png" alt="Project 1">
+      <div class="project-overlay"></div>
+    </div>
+
+    <div class="project-card reveal reveal-delay-1">
+      <img src="images/project2.jpeg" alt="Project 2">
+      <div class="project-overlay"></div>
+    </div>
+
+    <div class="project-card reveal reveal-delay-2">
+      <img src="images/project3.jpg" alt="Project 3">
+      <div class="project-overlay"></div>
+    </div>
+
+    <div class="project-card reveal reveal-delay-3">
+      <img src="images/project4.png" alt="Project 4">
+      <div class="project-overlay"></div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ============ CTA ============ -->
+<section class="cta">
+  <div class="container">
+    <span class="cta-eyebrow reveal">Begin Your Journey</span>
+    <h2 class="reveal reveal-delay-1">Ready to Design Your<br><em>Dream Space?</em></h2>
+    <p class="reveal reveal-delay-2">Every great home starts with a single conversation.</p>
+    <a href="#contact" class="gold-btn reveal reveal-delay-3">Book a Consultation</a>
+  </div>
+</section>
+
+
+<!-- ============ CONTACT ============ -->
+<section id="contact">
+  <div class="container contact-grid">
+
+    <div class="contact-info">
+      <span class="eyebrow reveal">Get in Touch</span>
+      <h2 class="reveal reveal-delay-1">Let's Create Something <em>Extraordinary</em></h2>
+      <p class="reveal reveal-delay-2">
+        Share your vision with us. We'll listen carefully and craft a proposal
+        that brings your dream space to life.
+      </p>
+
+      <div class="contact-detail reveal reveal-delay-3">
+        <div class="contact-detail-item">
+          <i class="fas fa-map-marker-alt"></i>
+          <div>
+            <span>Studio</span>
+            <p>12 Lavelle Road, Bangalore 560001</p>
+          </div>
+        </div>
+        <div class="contact-detail-item">
+          <i class="fas fa-phone"></i>
+          <div>
+            <span>Phone</span>
+            <p>+91 98765 43210</p>
+          </div>
+        </div>
+        <div class="contact-detail-item">
+          <i class="fas fa-envelope"></i>
+          <div>
+            <span>Email</span>
+            <p>hello@lumeliving.co</p>
+          </div>
         </div>
       </div>
-      <div class="product-name">Soleil Lounge Chair</div>
-      <div class="product-sub">Velvet — Amber</div>
-      <div class="product-price">₹64,500</div>
     </div>
-    <div class="product-card">
-      <div class="product-img">
-        <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&q=80" alt="Sectional">
-        <div class="product-overlay">
-          <button class="product-overlay-btn">Quick View</button>
+
+    <form class="contact-form reveal reveal-delay-2">
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="cf-name">Full Name</label>
+          <input id="cf-name" type="text" required>
+        </div>
+        <div class="form-group">
+          <label for="cf-email">Email Address</label>
+          <input id="cf-email" type="email" required>
         </div>
       </div>
-      <div class="product-name">Forme Sectional</div>
-      <div class="product-sub">Linen — Stone</div>
-      <div class="product-price">₹2,45,000</div>
-    </div>
-    <div class="product-card">
-      <div class="product-img">
-        <img src="https://images.unsplash.com/photo-1631679706909-1844bbd07221?w=600&q=80" alt="Side Table">
-        <div class="product-overlay">
-          <button class="product-overlay-btn">Quick View</button>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="cf-phone">Phone</label>
+          <input id="cf-phone" type="tel">
+        </div>
+        <div class="form-group">
+          <label for="cf-city">City</label>
+          <input id="cf-city" type="text">
         </div>
       </div>
-      <div class="product-name">Arc Side Table</div>
-      <div class="product-sub">Travertine & Brass</div>
-      <div class="product-price">₹38,200</div>
-    </div>
+
+      <div class="form-group">
+        <label for="cf-message">Your Message</label>
+        <textarea id="cf-message" rows="5"></textarea>
+      </div>
+
+      <button type="submit" class="form-submit">Send Inquiry</button>
+
+    </form>
+
   </div>
 </section>
 
-<!-- CATEGORIES -->
-<section class="categories-section">
-  <div class="section-header">
-    <div>
-      <p style="font-size:10px;letter-spacing:.35em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;">Browse</p>
-      <h2 class="section-title" style="color:var(--cream);">Shop by <em>Category</em></h2>
-    </div>
-    <a href="#" class="section-link">See All</a>
-  </div>
-  <div class="categories-layout">
-    <div class="cat-img">
-      <img src="https://images.unsplash.com/photo-1616137466211-f939a420be84?w=600&q=80" alt="Seating">
-    </div>
-    <div class="cat-list">
-      <div class="cat-list-item active">
-        Trendy Sofa Sets
-        <span class="cat-count">142</span>
-      </div>
-      <div class="cat-list-item">
-        Minimal & Modern Chairs
-        <span class="cat-count">88</span>
-      </div>
-      <div class="cat-list-item">
-        Accessories for Room
-        <span class="cat-count">234</span>
-      </div>
-      <div class="cat-list-item">
-        Kitchen & Dining
-        <span class="cat-count">97</span>
-      </div>
-      <div class="cat-list-item">
-        Outdoor Décor
-        <span class="cat-count">61</span>
-      </div>
-    </div>
-    <div class="cat-img">
-      <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80" alt="Decor">
-    </div>
-  </div>
-</section>
 
-<!-- STATEMENT -->
-<section class="statement">
-  <p class="statement-text" id="statementText">
-    <em>LumeLiving</em> — a contemporary home for the modern human, where light, form, and material meet in perfect harmony.
-  </p>
-  <div class="statement-icons">
-    <div class="s-icon"><img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=100&q=80" alt=""></div>
-    <div class="s-icon"><img src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=100&q=80" alt=""></div>
-  </div>
-  <a href="#" class="btn-primary"><span>Discover Our World</span></a>
-</section>
-
-<!-- PARALLAX -->
-<div class="parallax-divider">
-  <div class="parallax-bg"></div>
-  <div class="parallax-overlay">
-    <div class="parallax-content">
-      <div class="parallax-label">Our Philosophy</div>
-      <div class="parallax-quote">"Design is not just what it looks like and feels like. Design is how it works — and how it makes you feel."</div>
-      <a href="#" class="btn-primary" style="display:inline-block;"><span>Our Story</span></a>
-    </div>
-  </div>
-</div>
-
-<!-- SHOP BY ROOM -->
-<section class="rooms">
-  <div class="section-header">
-    <div>
-      <p style="font-size:10px;letter-spacing:.35em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;">Explore</p>
-      <h2 class="section-title">Shop by <em>Room</em></h2>
-    </div>
-    <a href="#" class="section-link">All Rooms</a>
-  </div>
-  <div class="rooms-grid">
-    <div class="room-card">
-      <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600&q=80" alt="Kitchen">
-      <div class="room-label">
-        <div class="room-label-name">Kitchen Room</div>
-        <span class="room-label-link">Explore →</span>
-      </div>
-    </div>
-    <div class="room-card">
-      <img src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=600&q=80" alt="Living Room">
-      <div class="room-label">
-        <div class="room-label-name">Living Room</div>
-        <span class="room-label-link">Explore →</span>
-      </div>
-    </div>
-    <div class="room-card">
-      <img src="https://images.unsplash.com/photo-1540518614846-7eded433c457?w=600&q=80" alt="Bedroom">
-      <div class="room-label">
-        <div class="room-label-name">Bed Room</div>
-        <span class="room-label-link">Explore →</span>
-      </div>
-    </div>
-    <div class="room-card">
-      <img src="https://images.unsplash.com/photo-1576678927484-cc907957088c?w=600&q=80" alt="Home Office">
-      <div class="room-label">
-        <div class="room-label-name">Home Office</div>
-        <span class="room-label-link">Explore →</span>
-      </div>
-    </div>
-    <div class="room-card">
-      <img src="https://images.unsplash.com/photo-1592247595977-4c30bbd36ef0?w=600&q=80" alt="Dining Room">
-      <div class="room-label">
-        <div class="room-label-name">Dining Room</div>
-        <span class="room-label-link">Explore →</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- INSTAGRAM -->
-<section class="instagram">
-  <div class="instagram-header">
-    <div class="insta-tag">Follow Us <span>@lumeliving</span></div>
-    <a href="#" class="section-link">Open Instagram</a>
-  </div>
-  <div class="instagram-grid">
-    <div class="insta-item">
-      <img src="https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=400&q=80" alt="">
-      <div class="insta-overlay"><div class="insta-overlay-icon">✦</div></div>
-    </div>
-    <div class="insta-item">
-      <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400&q=80" alt="">
-      <div class="insta-overlay"><div class="insta-overlay-icon">✦</div></div>
-    </div>
-    <div class="insta-item">
-      <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400&q=80" alt="">
-      <div class="insta-overlay"><div class="insta-overlay-icon">✦</div></div>
-    </div>
-    <div class="insta-item">
-      <img src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=400&q=80" alt="">
-      <div class="insta-overlay"><div class="insta-overlay-icon">✦</div></div>
-    </div>
-    <div class="insta-item">
-      <img src="https://images.unsplash.com/photo-1631679706909-1844bbd07221?w=400&q=80" alt="">
-      <div class="insta-overlay"><div class="insta-overlay-icon">✦</div></div>
-    </div>
-  </div>
-</section>
-
-<!-- FOOTER -->
+<!-- ============ FOOTER ============ -->
 <footer>
-  <div class="footer-hero">
-    <h2 class="footer-title">We craft <em>luminous</em><br>spaces worth living in</h2>
-    <a href="#" class="btn-primary"><span>Explore Our Collection</span></a>
-  </div>
-  <div class="footer-main">
-    <div class="footer-col">
-      <div class="footer-brand-name">LUME<span>LIVING</span></div>
-      <p class="footer-brand-desc">Curated interiors that reflect your story. Handpicked furniture, décor, and accessories for the discerning home.</p>
-      <div class="footer-newsletter">
-        <input type="email" class="footer-email" placeholder="Your email address">
-        <button class="footer-submit">Subscribe</button>
+  <div class="container footer-inner">
+
+    <div class="footer-brand">
+      <img src="images/logo.jpeg" alt="Lume Living Co.">
+      <p>Luxury Interior Design Studio</p>
+    </div>
+
+    <div class="footer-center">
+      <nav class="footer-nav">
+        <a href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#services">Services</a>
+        <a href="#projects">Projects</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <div class="footer-socials">
+        <i class="fab fa-instagram" aria-label="Instagram"></i>
+        <i class="fab fa-linkedin"  aria-label="LinkedIn"></i>
+        <i class="fab fa-pinterest" aria-label="Pinterest"></i>
       </div>
     </div>
-    <div class="footer-col">
-      <div class="footer-col-title">Shop</div>
-      <ul>
-        <li><a href="#">All Products</a></li>
-        <li><a href="#">Best Sellers</a></li>
-        <li><a href="#">New Arrivals</a></li>
-        <li><a href="#">Lowest Prices</a></li>
-        <li><a href="#">Delivery</a></li>
-      </ul>
+
+    <div class="footer-right">
+      <p>12 Lavelle Road<br>Bangalore 560001<br>hello@lumeliving.co</p>
     </div>
-    <div class="footer-col">
-      <div class="footer-col-title">Legal</div>
-      <ul>
-        <li><a href="#">Privacy Policy</a></li>
-        <li><a href="#">Shop Online</a></li>
-        <li><a href="#">Contact Us</a></li>
-        <li><a href="#">Returns & Claims</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <div class="footer-col-title">Studio</div>
-      <ul>
-        <li><a href="#">About Us</a></li>
-        <li><a href="#">Our Promise</a></li>
-        <li><a href="#">My Account</a></li>
-        <li><a href="#">Lookbook</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <div class="footer-col-title">Journal</div>
-      <ul>
-        <li><a href="#">Blog</a></li>
-        <li><a href="#">Reviews</a></li>
-        <li><a href="#">Privacy Policy</a></li>
-        <li><a href="#">Design Tips</a></li>
-      </ul>
-    </div>
+
   </div>
-  <div class="footer-bottom">
-    <p class="footer-copy">© 2025 LumeLiving Studio. All Rights Reserved.</p>
-    <div class="footer-social">
-      <a href="#">Instagram</a>
-      <a href="#">Pinterest</a>
-      <a href="#">LinkedIn</a>
-    </div>
+
+  <div class="container footer-bottom">
+    <p>© 2026 Lume Living Co. · All rights reserved · Crafted with intention</p>
   </div>
 </footer>
 
-<script>
-// LOADER
-window.addEventListener('load', () => {
-  setTimeout(() => {
-    document.getElementById('loader').classList.add('hidden');
-  }, 2200);
-});
 
-// CURSOR
-const cursor = document.getElementById('cursor');
-const cursorRing = document.getElementById('cursorRing');
-let mouseX = 0, mouseY = 0;
-let ringX = 0, ringY = 0;
-
-document.addEventListener('mousemove', e => {
-  mouseX = e.clientX;
-  mouseY = e.clientY;
-  cursor.style.left = mouseX + 'px';
-  cursor.style.top = mouseY + 'px';
-});
-
-(function animRing() {
-  ringX += (mouseX - ringX) * 0.12;
-  ringY += (mouseY - ringY) * 0.12;
-  cursorRing.style.left = ringX + 'px';
-  cursorRing.style.top = ringY + 'px';
-  requestAnimationFrame(animRing);
-})();
-
-// Cursor state on hover
-document.querySelectorAll('a, button, .cat-list-item, .product-card, .room-card, .insta-item').forEach(el => {
-  el.addEventListener('mouseenter', () => {
-    cursor.style.width = '20px';
-    cursor.style.height = '20px';
-    cursorRing.style.width = '60px';
-    cursorRing.style.height = '60px';
-    cursorRing.style.opacity = '0.4';
-  });
-  el.addEventListener('mouseleave', () => {
-    cursor.style.width = '8px';
-    cursor.style.height = '8px';
-    cursorRing.style.width = '36px';
-    cursorRing.style.height = '36px';
-    cursorRing.style.opacity = '0.6';
-  });
-});
-
-// NAV SCROLL
-const navbar = document.getElementById('navbar');
-window.addEventListener('scroll', () => {
-  navbar.classList.toggle('scrolled', window.scrollY > 60);
-  // Progress bar
-  const prog = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
-  document.getElementById('progressBar').style.width = prog + '%';
-});
-
-// INTERSECTION OBSERVER
-const observeAll = (selector, delay = 0) => {
-  const els = document.querySelectorAll(selector);
-  const obs = new IntersectionObserver((entries) => {
-    entries.forEach((e, i) => {
-      if (e.isIntersecting) {
-        setTimeout(() => e.target.classList.add('visible'), delay + i * 80);
-        obs.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.15 });
-  els.forEach(el => obs.observe(el));
-};
-
-observeAll('.feature-item', 0);
-observeAll('.product-card', 0);
-observeAll('.room-card', 0);
-
-// Statement text
-const stmtObs = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      e.target.classList.add('visible');
-      stmtObs.unobserve(e.target);
-    }
-  });
-}, { threshold: 0.3 });
-stmtObs.observe(document.getElementById('statementText'));
-
-// CATEGORY INTERACTION
-const catItems = document.querySelectorAll('.cat-list-item');
-catItems.forEach(item => {
-  item.addEventListener('mouseenter', () => {
-    catItems.forEach(i => i.classList.remove('active'));
-    item.classList.add('active');
-  });
-});
-
-// PARALLAX for divider on scroll
-const parallaxBg = document.querySelector('.parallax-bg');
-if (parallaxBg) {
-  window.addEventListener('scroll', () => {
-    const rect = parallaxBg.closest('.parallax-divider').getBoundingClientRect();
-    if (rect.top < window.innerHeight && rect.bottom > 0) {
-      const progress = (window.innerHeight - rect.top) / (window.innerHeight + rect.height);
-      parallaxBg.style.transform = `translateY(${(progress - 0.5) * 80}px)`;
-    }
-  });
-}
-
-// SMOOTH number reveal for product prices
-const priceEls = document.querySelectorAll('.product-price');
-const priceObs = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      e.target.style.opacity = '0';
-      e.target.style.transform = 'translateY(8px)';
-      setTimeout(() => {
-        e.target.style.transition = 'all 0.5s';
-        e.target.style.opacity = '1';
-        e.target.style.transform = 'translateY(0)';
-      }, 400);
-      priceObs.unobserve(e.target);
-    }
-  });
-}, { threshold: 1 });
-priceEls.forEach(el => priceObs.observe(el));
-
-// Hero image slow pan on load
-document.querySelectorAll('.hero-img img').forEach((img, i) => {
-  img.style.transform = 'scale(1.08)';
-  img.style.transition = `transform ${6 + i}s ease-out`;
-  setTimeout(() => { img.style.transform = 'scale(1)'; }, 100);
-});
-</script>
+<script src="js/script.js"></script>
 </body>
 </html>
